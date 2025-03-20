@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 
-# ✅ Safe Database Connection Function (Does Not Return Connection in a Route)
+# Safe Database Connection Function (Does Not Return Connection in a Route)
 def db_connection():
     try:
         conn = mysql.connector.connect(
@@ -18,19 +18,19 @@ def db_connection():
     except mysql.connector.Error as err:
         return None, str(err)
 
-# ✅ Safe Response for Root Route Instead of Returning MySQL Connection
+# Safe Response for Root Route Instead of Returning MySQL Connection
 @app.route("/")
 def home():
     return jsonify({"message": "Smart Water System API is running"}), 200
 
-# ✅ Load ML Model (Check if Model Path is Correct)
+# Load ML Model (Check if Model Path is Correct)
 model_path = 'model1/model/water_quality_model.pkl'
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"Model file not found at {model_path}")
 
 model = joblib.load(model_path)
 
-# ✅ Route to Receive Sensor Data
+# Route to Receive Sensor Data
 @app.route('/api/sensor', methods=['POST'])
 def receive_sensor_data():
     data = request.json
@@ -38,7 +38,7 @@ def receive_sensor_data():
     
     conn, error = db_connection()
     if error:
-        return jsonify({"error": error}), 500  # ✅ Handle DB Connection Failure
+        return jsonify({"error": error}), 500  # Handle DB Connection Failure
 
     try:
         cursor = conn.cursor()
@@ -52,7 +52,7 @@ def receive_sensor_data():
         cursor.close()
         conn.close()
 
-# ✅ Route to Predict Contamination Risk
+# Route to Predict Contamination Risk
 @app.route('/api/predict', methods=['POST'])
 def predict():
     data = request.json
