@@ -11,7 +11,7 @@ def db_connection():
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="Syamprasad@123",  # ⚠️ Move this to environment variables for security
+            password="your-password",  # ⚠️ Move this to environment variables for security
             database="water_quality"
         )
         return conn
